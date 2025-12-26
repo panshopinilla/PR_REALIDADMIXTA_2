@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Maqueta AR Anclada - Tambo</title>
+    <title>Maqueta en QR - Tambo</title>
     
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -10,40 +10,34 @@
     <style>
       body { margin: 0; overflow: hidden; }
       
-      /* UI DE ESCANEO */
+      /* Interfaz de Escaneo (Guía visual) */
       #scanning-overlay {
         position: absolute; left: 0; top: 0; width: 100%; height: 100%;
         display: flex; flex-direction: column; align-items: center; justify-content: center;
-        z-index: 2; pointer-events: none; /* Dejar pasar clicks */
+        pointer-events: none; z-index: 999;
       }
-      .scan-guide {
-        width: 70vw; height: 70vw; border: 2px dashed #EB6242; border-radius: 20px;
-        box-shadow: 0 0 1000px rgba(0,0,0,0.5); opacity: 0.8;
+      .scan-box {
+        width: 60vw; height: 60vw; 
+        border: 4px solid #EB6242; border-radius: 20px;
+        box-shadow: 0 0 0 1000px rgba(0,0,0,0.7); /* Oscurece el resto */
       }
       .scan-text {
-        margin-top: 20px; color: white; font-family: sans-serif; font-weight: bold; 
-        background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 10px;
+        margin-top: 20px; color: white; font-family: 'Helvetica', sans-serif; 
+        font-weight: bold; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 20px;
       }
+      
+      /* Ocultar guía cuando se encuentra el target */
       .hidden { display: none !important; }
-
-      /* BOTÓN VOLVER */
-      #btn-back {
-        position: absolute; top: 20px; left: 20px; z-index: 10;
-        background: rgba(255,255,255,0.9); border: none; padding: 10px 20px;
-        border-radius: 30px; font-weight: bold; cursor: pointer;
-      }
     </style>
 </head>
 <body>
 
-    <button id="btn-back" onclick="window.close()">⬅ Volver</button>
-
     <div id="scanning-overlay">
-        <div class="scan-guide"></div>
-        <div class="scan-text">Apunta a la imagen objetivo</div>
+        <div class="scan-box"></div>
+        <div class="scan-text">📷 Apunta al Código QR</div>
     </div>
 
-    <a-scene mindar-image="imageTargetSrc: ./assets/targets.mind; uiScanning: #scanning-overlay;" 
+    <a-scene mindar-image="imageTargetSrc: ./assets/targets.mind; uiScanning: #scanning-overlay; filterMinCF:0.0001; filterBeta: 0.001;" 
              color-space="sRGB" 
              renderer="colorManagement: true, physicallyCorrectLights" 
              vr-mode-ui="enabled: false" 
@@ -60,9 +54,10 @@
         <a-gltf-model src="#modelo-tambo" 
                       rotation="90 0 0" 
                       position="0 0 0" 
-                      scale="0.1 0.1 0.1"> 
+                      scale="0.2 0.2 0.2"
+                      animation="property: scale; from: 0 0 0; to: 0.2 0.2 0.2; dur: 1000; easing: easeOutElastic">
         </a-gltf-model>
-        
+
       </a-entity>
     </a-scene>
 
